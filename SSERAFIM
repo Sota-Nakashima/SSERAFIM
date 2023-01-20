@@ -25,12 +25,13 @@ Try -h option for more information
 END
 }
 
-# いつか元に戻す
+# some day remove "#"
 #if [[ $# -eq 0 ]]; then
 #    print_help
 #    exit 0
 #fi
 
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
 OUTPUT_DIR="./SSERAFIM"
 
 while getopts :o:hV option
@@ -58,15 +59,12 @@ do
     esac
 done
 
-if [[ ! -e "$OUTPUT_DIR" ]] ; then
-    printf '%s\n' "${SCRIPT_NAME}: PATH is not exist." 1>&2
-    exit 1
-fi
-
 if [[ -d "$OUTPUT_DIR" ]] ; then
     printf '%s\n' "${SCRIPT_NAME}: the same directory is already exist." 1>&2
     exit 1
 fi
+#better mkdir -p ?
 
 mkdir "$OUTPUT_DIR"
 
+bash $SCRIPT_DIR/subscript/sra_download.sh $OUTPUT_DIR
