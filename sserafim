@@ -1,0 +1,133 @@
+#!/bin/bash
+
+# get conda init path
+###################################
+conda_path=`which conda`
+conda_path_array=(${conda_path//\// })
+list_number=$((${#conda_path_array[*]}-3))
+for S in $(seq 0 $list_number); do
+    CONDA_INIT_PATH+="/${conda_path_array[$S]}"
+done
+
+CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
+echo $conda_init_path
+
+###################################
+readonly SCRIPT_NAME=${0##*/}
+readonly VERSION=1.0.0
+
+print_help()
+{
+    cat << END
+Test version
+END
+}
+
+print_version()
+{
+    cat << END
+$SCRIPT_NAME version $VERSION
+END
+}
+
+print_error()
+{
+    cat << END 1>&2
+$SCRIPT_NAME: $1
+Try -h option for more information
+END
+}
+
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+OUTPUT_DIR="./SSERAFIM"
+SET_SRA_LIST_PATH=false
+PARALLEL=1
+
+while getopts :o:s:p:g:c:hV option
+do
+    case "$option" in
+        o)
+            OUTPUT_DIR=$OPTARG
+            ;;
+        s)
+            SRA_LIST_PATH=$OPTARG
+            SET_SRA_LIST_PATH=true
+            ;;
+        g)
+            REFERENCE_GENOME_PATH=$OPTARG
+            SET_REFERENCE_GENOME_PATH=true
+            ;;
+        c)
+            CONDA_INIT_PATH=$OPTARG
+            ;;
+        p)
+            PARALLEL=$OPTARG
+            ;;
+        h)
+            print_help
+            exit 0
+            ;;
+        V)
+            print_version
+            exit 0
+            ;;
+        :)
+            print_error "option requires an argument -- '$OPTARG'"
+            exit 1
+            ;;
+        \?)
+            print_error "unrecognized option -- '$OPTARG'"
+            exit 1
+            ;;
+    esac
+done
+
+if [[ "${SET_SRA_LIST_PATH=true}" != true || "${SET_REFERENCE_GENOME_PATH=true}" != true ]] ; then
+    printf '%s\n' "${SCRIPT_NAME}: need more option" 1>&2
+    print_help
+    exit 1
+fi
+
+if [[ ! -e $SRA_LIST_PATH || ! -e $REFERENCE_GENOME_PATH ]] ; then
+    printf '%s\n' "${SCRIPT_NAME}: options path is not exist." 1>&2
+    print_help
+    exit 1
+fi
+
+if [[ ! -e $CONDA_INIT_PATH ]] ; then
+    printf '%s\n' "${SCRIPT_NAME}: you have to check CONDA_INIT_PATH. please use -c option." 1>&2
+    print_help
+    exit 1
+fi
+
+#########################################
+#
+#if [[ -d "$OUTPUT_DIR" ]] ; then
+#    printf '%s\n' "${SCRIPT_NAME}: the same directory is already exist." 1>&2
+#    exit 1
+#fi
+##better mkdir -p ?
+#
+#mkdir -p "$OUTPUT_DIR"
+#
+##prefetch
+#bash $SCRIPT_DIR/script/sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH
+#
+##########################################
+#fasterq-dump
+bash $SCRIPT_DIR/script/fasterq_dump.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
+
+#trim-galore
+bash $SCRIPT_DIR/script/fasta_trimming.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
+
+#fastqc
+bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
+
+#multiqc
+bash $SCRIPT_DIR/script/multiqc.sh $CONDA_INIT_PATH $OUTPUT_DIR
+
+#multiqc_report
+bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
+
+#hisat2
+bash $SCRIPT_DIR/script/hisat.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH
