@@ -129,5 +129,8 @@ bash $SCRIPT_DIR/script/multiqc.sh $CONDA_INIT_PATH $OUTPUT_DIR
 #multiqc_report
 bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
 
-#hisat2
-bash $SCRIPT_DIR/script/hisat.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH
+#hisat2-build
+bash $SCRIPT_DIR/script/hisat_build.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH
+
+#hisat2 & samtools
+bash $SCRIPT_DIR/script/hisat_samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_LIST_PATH

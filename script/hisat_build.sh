@@ -2,14 +2,13 @@
 
 CONDA_INIT_PATH="$1"
 REFERENCE_DIR="$2/reference_genome"
-OUTPUT_DIR="$2/sam"
 PARALLEL=$3
 REFERENCE_GENOME_PATH=$4
 
 source $CONDA_INIT_PATH
 conda activate bio
 
-mkdir $REFERENCE_DIR $OUTPUT_DIR
+mkdir $REFERENCE_DIR 
 
 ln -s $REFERENCE_GENOME_PATH $REFERENCE_DIR/reference_alias
 
