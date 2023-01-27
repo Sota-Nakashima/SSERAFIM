@@ -14,7 +14,7 @@ echo $conda_init_path
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=1.0.0
+readonly VERSION=0.1.0
 
 print_help()
 {
@@ -111,7 +111,7 @@ fi
 #mkdir -p "$OUTPUT_DIR"
 #
 ##prefetch
-#bash $SCRIPT_DIR/script/sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH
+#bash $SCRIPT_DIR/script/sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PALARREL
 #
 ##########################################
 #fasterq-dump

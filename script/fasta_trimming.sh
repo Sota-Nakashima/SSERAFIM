@@ -5,6 +5,11 @@ OUTPUT_DIR="$2/fastaq_trim"
 FASTAQ_DIR="$2/fastaq/*"
 PARALLEL=$3
 
+#matching parallel number to trim_galore
+if [[ $((PARALLEL)) -gt 5 ]]; then
+    PARALLEL=5
+fi
+
 source $CONDA_INIT_PATH
 conda activate bio
 
