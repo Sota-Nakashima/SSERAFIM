@@ -14,4 +14,4 @@ $OUTPUT_DIR/sam $OUTPUT_DIR/sra \
 source $CONDA_INIT_PATH
 conda activate bio
 
-pigz $OUTPUT_DIR/law_data -p $PALARREL
+zip -r -m $OUTPUT_DIR/law_data.zip $OUTPUT_DIR/law_data
