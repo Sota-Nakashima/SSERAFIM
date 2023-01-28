@@ -50,7 +50,7 @@ RESULT_DIRECTORY
 OUTPUT_DIR
 |
 |--- result
-|--- law_data.gz (This directory is very large size. Please warn when decompressing.)
+|--- law_data.zip (This directory is very large size. Please warn when decompressing.)
 END
 }
 
