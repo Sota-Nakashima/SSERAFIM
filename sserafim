@@ -72,6 +72,8 @@ END
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 OUTPUT_DIR="./SSERAFIM"
 SET_SRA_LIST_PATH=false
+SET_REFERENCE_GENOME_PATH=false
+SET_GENOME_ANNOTATION_PATH=false
 PARALLEL=1
 
 while getopts :o:s:p:g:c:a:hV option
@@ -117,7 +119,7 @@ do
     esac
 done
 
-if [[ "${SET_SRA_LIST_PATH}" != true || "${SET_REFERENCE_GENOME_PATH}" != true || "${SET_GENOME_ANNOTATION_PATH}" != true ]] ; then
+if [[ "${SET_SRA_LIST_PATH}" != "true" || "${SET_REFERENCE_GENOME_PATH}" != "true" || "${SET_GENOME_ANNOTATION_PATH}" != "true" ]] ; then
     printf '%s\n' "${SCRIPT_NAME}: need more option" 1>&2
     print_help
     exit 1
@@ -167,6 +169,7 @@ bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_D
 #judge binary
 REFERENCE_GENOME_PATH_BINARY=false
 GENOME_ANNOTATION_PATH_BINARY=false
+
 a=$(file --mime "$REFERENCE_GENOME_PATH" | grep "charset=binary")
 if [ -n "$a" ]; then 
     REFERENCE_GENOME_PATH_BINARY=true
@@ -191,11 +194,11 @@ bash $SCRIPT_DIR/script/hisat_samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $GENOME_ANNOTATION_PATH $PARALLEL
 
 #compress refernece
-if [[ "${REFERENCE_GENOME_PATH_BINARY}" != true ]]
+if [[ "${REFERENCE_GENOME_PATH_BINARY}" != "true" ]]
     bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL
 fi
 
-if [[ "${GENOME_ANNOTATION_PATH_BINARY}" != true ]]
+if [[ "${GENOME_ANNOTATION_PATH_BINARY}" != "true" ]]
     bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL
 fi
 

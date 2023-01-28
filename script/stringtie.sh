@@ -23,6 +23,6 @@ for line in "${file[@]}"; do
     -G "$GENOME_ANNOTATION_PATH" \
     -o "$OUTPUT_DIR_RESULT/gtf/${line}.gtf" \
     -A "$OUTPUT_DIR_RESULT/tsv/${line}.tsv" \
-    -b "$OUTPUT_DIR_RESULT/Ballgown" \
+    -b "$OUTPUT_DIR_RESULT/Ballgown/${line}" \
     -p "$PARALLEL"
 done
