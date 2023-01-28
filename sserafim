@@ -117,7 +117,7 @@ do
     esac
 done
 
-if [[ "${SET_SRA_LIST_PATH=true}" != true || "${SET_REFERENCE_GENOME_PATH=true}" != true || "${SET_GENOME_ANNOTATION_PATH}" != true ]] ; then
+if [[ "${SET_SRA_LIST_PATH}" != true || "${SET_REFERENCE_GENOME_PATH}" != true || "${SET_GENOME_ANNOTATION_PATH}" != true ]] ; then
     printf '%s\n' "${SCRIPT_NAME}: need more option" 1>&2
     print_help
     exit 1
@@ -164,9 +164,22 @@ bash $SCRIPT_DIR/script/multiqc.sh $CONDA_INIT_PATH $OUTPUT_DIR
 #multiqc_report
 bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
 
-#unzip reference
-#bash $SCRIPT_DIR/script/unzip_compress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL
-#bash $SCRIPT_DIR/script/unzip_compress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL
+#judge binary
+REFERENCE_GENOME_PATH_BINARY=false
+GENOME_ANNOTATION_PATH_BINARY=false
+a=$(file --mime "$REFERENCE_GENOME_PATH" | grep "charset=binary")
+if [ -n "$a" ]; then 
+    REFERENCE_GENOME_PATH_BINARY=true
+fi
+
+b=$(file --mime "$GENOME_ANNOTATION_PATH" | grep "charset=binary")
+if [ -n "$b" ]; then 
+    GENOME_ANNOTATION_PATH_BINARY=true
+fi
+
+#decompress reference
+REFERENCE_GENOME_PATH=`bash $SCRIPT_DIR/script/decompress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL`
+GENOME_ANNOTATION_PATH=`bash $SCRIPT_DIR/script/decompress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL`
 #
 #hisat2-build
 bash $SCRIPT_DIR/script/hisat_build.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH
@@ -178,8 +191,13 @@ bash $SCRIPT_DIR/script/hisat_samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $GENOME_ANNOTATION_PATH $PARALLEL
 
 #compress refernece
-#bash $SCRIPT_DIR/script/unzip_compress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL
-#bash $SCRIPT_DIR/script/unzip_compress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL
-#
+if [[ "${REFERENCE_GENOME_PATH_BINARY}" != true ]]
+    bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL
+fi
+
+if [[ "${GENOME_ANNOTATION_PATH_BINARY}" != true ]]
+    bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL
+fi
+
 #archive
 bash $SCRIPT_DIR/script/archive.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL

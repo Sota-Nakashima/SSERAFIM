@@ -10,8 +10,7 @@ conda activate bio
 a=$(file --mime "$FILE_PATH" | grep "charset=binary")
 if [ -n "$a" ]; then 
     unpigz $FILE_PATH -p $PALARREL
+    echo ${FILE_PATH%.gz}
 else
-    pigz $FILE_PATH -p $PALARREL
+    echo $FILE_PATH
 fi
-
-
