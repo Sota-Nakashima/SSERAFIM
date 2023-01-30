@@ -50,6 +50,9 @@ RESULT_DIRECTORY
 OUTPUT_DIR
 |
 |--- result
+|      |-- gff
+|      |-- tsv
+|      |-- ballgrown
 |--- law_data.zip (This directory is very large size. Please warn when decompressing.)
 END
 }
@@ -184,21 +187,21 @@ fi
 REFERENCE_GENOME_PATH=`bash $SCRIPT_DIR/script/decompress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL`
 GENOME_ANNOTATION_PATH=`bash $SCRIPT_DIR/script/decompress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL`
 #
-#hisat2-build
-bash $SCRIPT_DIR/script/hisat_build.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH
+#hisat2
+bash $SCRIPT_DIR/script/hisat.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH $SRA_LIST_PATH
 
-#hisat2 & samtools
-bash $SCRIPT_DIR/script/hisat_samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_LIST_PATH
+#samtools
+bash $SCRIPT_DIR/script/samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_LIST_PATH
 
 #stringtie
 bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $GENOME_ANNOTATION_PATH $PARALLEL
 
 #compress refernece
-if [[ "${REFERENCE_GENOME_PATH_BINARY}" != "true" ]]
+if [[ "${REFERENCE_GENOME_PATH_BINARY}" != "true" ]] ; then
     bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL
 fi
 
-if [[ "${GENOME_ANNOTATION_PATH_BINARY}" != "true" ]]
+if [[ "${GENOME_ANNOTATION_PATH_BINARY}" != "true" ]] ; then
     bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL
 fi
 
