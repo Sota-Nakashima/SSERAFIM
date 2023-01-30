@@ -14,7 +14,7 @@ echo $conda_init_path
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=0.1.0
+readonly VERSION=0.1.1
 
 print_help()
 {
@@ -77,9 +77,10 @@ OUTPUT_DIR="./SSERAFIM"
 SET_SRA_LIST_PATH=false
 SET_REFERENCE_GENOME_PATH=false
 SET_GENOME_ANNOTATION_PATH=false
+FASTP_OPTION=trim_galore
 PARALLEL=1
 
-while getopts :o:s:p:g:c:a:hV option
+while getopts :o:s:p:g:c:a:fhV option
 do
     case "$option" in
         o)
@@ -102,6 +103,9 @@ do
             ;;
         p)
             PARALLEL=$OPTARG
+            ;;
+        f)
+            TRIM_OPTION=fastp
             ;;
         h)
             print_help
@@ -157,14 +161,20 @@ bash $SCRIPT_DIR/script/sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_P
 #fasterq-dump
 bash $SCRIPT_DIR/script/fasterq_dump.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 
-#trim-galore
-bash $SCRIPT_DIR/script/fasta_trimming.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
+if [[ $TRIM_OPTION == "trim_galore" ]] ; then
+    #trim-galore
+    bash $SCRIPT_DIR/script/fasta_trimming.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 
-#fastqc
-bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
+    #fastqc
+    bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 
-#multiqc
-bash $SCRIPT_DIR/script/multiqc.sh $CONDA_INIT_PATH $OUTPUT_DIR
+    #multiqc
+    bash $SCRIPT_DIR/script/multiqc.sh $CONDA_INIT_PATH $OUTPUT_DIR
+else
+    #fastp
+    bash $SCRIPT_DIR/script/fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
+fi
+
 
 #multiqc_report
 bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
