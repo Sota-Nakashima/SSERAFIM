@@ -8,4 +8,4 @@ conda activate bio
 
 mkdir $OUTPUT_DIR
 
-multiqc $2/fastaq_trim/html -o $OUTPUT_DIR
+multiqc $2/fastaq_trim/json -o $OUTPUT_DIR

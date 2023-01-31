@@ -20,10 +20,10 @@ file=(`cat "$SRA_LIST_PATH"`)
 IFS=$' \t\n'
 
 for line in "${file[@]}"; do
-    fastp "$OUTPUT_DIR/fastaq/${line}.fq.gz" \
+    fastp -i "$OUTPUT_DIR/fastaq/${line}.fastq.gz" \
     -o "$OUTPUT_DIR_TRIM_FASTQ/${line}_trimmed.fq.gz" \
-    -h "$OUTPUT_DIR_HTML/${line}.html"
-    -j "$OUTPUT_DIR_JSON/${line}.json"
+    -h "$OUTPUT_DIR_HTML/${line}.html" \
+    -j "$OUTPUT_DIR_JSON/${line}fastp.json" \
     -w "$PARALLEL"
 done
 

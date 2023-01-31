@@ -38,22 +38,24 @@ Example
     [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
 
 OPTION
--o OUTPUT_DIR                                                   set output directory(default: ./SSERAFIM)
+-o OUTPUT_DIR       set output directory(default: ./SSERAFIM)
 
-###########################################################################################################
+#########################################################
 CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
-###########################################################################################################
--s SRA_LIST_PATH (.txt)                                         better absolute path than relative path
--g REFERENCE_GENOME_PATH (.fasta/fasta.gz)                      better absolute path than relative path
--a GENOME_ANNOTATION_PATH (.gff3 or .gtf/.gff3.gz or .gtf.gz)   better absolute path than relative path
-###########################################################################################################
+>>better absolute path than relative path<<
+#########################################################
+-s SRA_LIST_PATH (.txt)                                         
+-g REFERENCE_GENOME_PATH (.fasta/fasta.gz)                      
+-a GENOME_ANNOTATION_PATH (.gff3 or .gtf/.gff3.gz or .gtf.gz) 
+#########################################################
 
--c CONDA_INIT_PATH                                              if printed error "you have to check ...",please reset path.
-                                                                "~/{YOUR CONDA PACKAGE}/etc/profile.d/conda.sh"
--p PARALLEL (int)                                               set using CPU core(default: 1)
--f TRIM_OPTION                                                  change trimming software into fastp (default: trim-galore)
--h HELP                                                         show help                 
--V VERSION                                                      shoe version
+
+-c CONDA_INIT_PATH  if printed error "you have to check ...",please reset path.
+                    "~/{YOUR CONDA PACKAGE}/etc/profile.d/conda.sh"
+-p PARALLEL (int)   set using CPU core(default: 1)
+-f TRIM_OPTION      change trimming software into fastp (default: trim-galore)
+-h HELP             show help                 
+-V VERSION          shoe version
 
 ##################
 RESULT_DIRECTORY
@@ -66,12 +68,40 @@ OUTPUT_DIR
 │       ├─── multiqc
 │       └─── tsv
 ├─── (caution_report_multiqc.tsv)
-└─── law_data.zip (This directory is very large size. Please warn when decompressing.)
-If fasta file quality is not good, sserafim output "caution_report_multiqc.tsv".
+└─── law_data.tar.gz (This directory is very large size. Please warn when decompressing.)
+If you don't set option "-f" and fasta file quality is not good, sserafim output "caution_report_multiqc.tsv".
 Please check when you analyze results.
 END
 }
 
+print_short_help()
+{
+    cat << END
+Example
+    sserafim [OPTION] [-s SRA_LIST_PATH] [-p 10] 
+    [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
+
+OPTION
+-o OUTPUT_DIR       set output directory(default: ./SSERAFIM)
+
+#########################################################
+CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
+>>better absolute path than relative path<<
+#########################################################
+-s SRA_LIST_PATH (.txt)                                         
+-g REFERENCE_GENOME_PATH (.fasta/fasta.gz)                      
+-a GENOME_ANNOTATION_PATH (.gff3 or .gtf/.gff3.gz or .gtf.gz) 
+#########################################################
+
+
+-c CONDA_INIT_PATH  if printed error "you have to check ...",please reset path.
+                    "~/{YOUR CONDA PACKAGE}/etc/profile.d/conda.sh"
+-p PARALLEL (int)   set using CPU core(default: 1)
+-f TRIM_OPTION      change trimming software into fastp (default: trim-galore)
+-h HELP             show help                 
+-V VERSION          shoe version
+END
+}
 print_version()
 {
     cat << END
@@ -143,19 +173,19 @@ done
 
 if [[ "${SET_SRA_LIST_PATH}" != "true" || "${SET_REFERENCE_GENOME_PATH}" != "true" || "${SET_GENOME_ANNOTATION_PATH}" != "true" ]] ; then
     printf '%s\n' "${SCRIPT_NAME}: need more option" 1>&2
-    print_help
+    print_short_help
     exit 1
 fi
 
 if [[ ! -e $SRA_LIST_PATH || ! -e $REFERENCE_GENOME_PATH || ! -e $GENOME_ANNOTATION_PATH ]] ; then
     printf '%s\n' "${SCRIPT_NAME}: options path is not exist." 1>&2
-    print_help
+    print_short_help
     exit 1
 fi
 
 if [[ ! -e $CONDA_INIT_PATH ]] ; then
     printf '%s\n' "${SCRIPT_NAME}: you have to check CONDA_INIT_PATH. please use -c option." 1>&2
-    print_help
+    print_short_help
     exit 1
 fi
 
@@ -185,16 +215,20 @@ if [[ $TRIM_OPTION == "trim_galore" ]] ; then
     
     #multiqc
     bash $SCRIPT_DIR/script/multiqc_trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR
+
+    #multiqc_report
+    bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
+
 elif [[ $TRIM_OPTION == "fastp" ]] ; then
     #fastp
     bash $SCRIPT_DIR/script/fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL
 
     #multiqc
     bash $SCRIPT_DIR/script/multiqc_fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR
+
 fi
 
-#multiqc_report
-bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
+
 
 #judge binary
 REFERENCE_GENOME_PATH_BINARY=false
@@ -224,11 +258,11 @@ bash $SCRIPT_DIR/script/samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_
 bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $GENOME_ANNOTATION_PATH $PARALLEL
 
 #compress refernece
-if [[ "${REFERENCE_GENOME_PATH_BINARY}" != "true" ]] ; then
+if [[ "$REFERENCE_GENOME_PATH_BINARY" == "true" ]] ; then
     bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL
 fi
 
-if [[ "${GENOME_ANNOTATION_PATH_BINARY}" != "true" ]] ; then
+if [[ "$GENOME_ANNOTATION_PATH_BINARY" == "true" ]] ; then
     bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL
 fi
 

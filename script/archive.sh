@@ -16,4 +16,8 @@ mv $OUTPUT_DIR/multiqc -t $OUTPUT_DIR/result
 source $CONDA_INIT_PATH
 conda activate bio
 
-zip -r -m $OUTPUT_DIR/law_data.zip $OUTPUT_DIR/law_data
+cd $OUTPUT_DIR
+
+tar -cvf law_data.tar law_data --remove-files
+
+pigz law_data.tar -p "$PALARREL"
