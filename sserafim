@@ -69,7 +69,7 @@ OUTPUT_DIR
 │       └─── tsv
 ├─── (caution_report_multiqc.tsv)
 └─── law_data.tar.gz (This directory is very large size. Please warn when decompressing.)
-If you don't set option "-f" and fasta file quality is not good, sserafim output "caution_report_multiqc.tsv".
+If fasta file quality is not good, sserafim output "caution_report_multiqc.tsv".
 Please check when you analyze results.
 END
 }
@@ -209,26 +209,21 @@ bash $SCRIPT_DIR/script/fasterq_dump.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 if [[ $TRIM_OPTION == "trim_galore" ]] ; then
     #trim-galore
     bash $SCRIPT_DIR/script/trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
-    
-    #fastqc
-    bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
-    
-    #multiqc
-    bash $SCRIPT_DIR/script/multiqc_trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR
-
-    #multiqc_report
-    bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
 
 elif [[ $TRIM_OPTION == "fastp" ]] ; then
     #fastp
     bash $SCRIPT_DIR/script/fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL
 
-    #multiqc
-    bash $SCRIPT_DIR/script/multiqc_fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR
-
 fi
 
+#fastqc
+bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 
+#multiqc
+bash $SCRIPT_DIR/script/multiqc_trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR
+
+#multiqc_report
+bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
 
 #judge binary
 REFERENCE_GENOME_PATH_BINARY=false

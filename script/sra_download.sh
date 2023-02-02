@@ -18,4 +18,4 @@ conda activate bio
 #sra download
 #prefetch  --output-directory "$OUTPUT_DIR" --option-file $SRA_LIST_PATH
 sort -u "$SRA_LIST_PATH" | \
-parallel -j $PARALLEL "prefetch --output-directory $OUTPUT_DIR {}"
+parallel -j $PARALLEL "prefetch --output-directory $OUTPUT_DIR {} -p"
