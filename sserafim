@@ -209,26 +209,21 @@ bash $SCRIPT_DIR/script/fasterq_dump.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 if [[ $TRIM_OPTION == "trim_galore" ]] ; then
     #trim-galore
     bash $SCRIPT_DIR/script/trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
-    
-    #fastqc
-    bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
-    
-    #multiqc
-    bash $SCRIPT_DIR/script/multiqc_trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR
-
-    #multiqc_report
-    bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
 
 elif [[ $TRIM_OPTION == "fastp" ]] ; then
     #fastp
     bash $SCRIPT_DIR/script/fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL
 
-    #multiqc
-    bash $SCRIPT_DIR/script/multiqc_fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR
-
 fi
 
+#fastqc
+bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL
 
+#multiqc
+bash $SCRIPT_DIR/script/multiqc_trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR
+
+#multiqc_report
+bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR
 
 #judge binary
 REFERENCE_GENOME_PATH_BINARY=false
