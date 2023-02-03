@@ -207,60 +207,71 @@ fi
 mkdir -p "$OUTPUT_DIR"
 
 #prefetch
-cat << END
-┌──────────┐
-│ prefetch │
-└──────────┘
-END &>> report.log
-bash $SCRIPT_DIR/script/sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL &>> report.log
+printf '\n%s\n\n' "prefetch" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
 
 ##########################################
+
 #fasterq-dump
-cat << END
-┌──────────────┐
-│ fasterq-dump │
-└──────────────┘
-END &>> report.log
-bash $SCRIPT_DIR/script/fasterq_dump.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> report.log
+printf '\n%s\n\n' "fasterq-dump" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/fasterq_dump.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> $OUTPUT_DIR/report.log
 
-if [[ $TRIM_OPTION == "trim_galore" ]] ; then
-    #trim-galore
-    cat << END
-┌─────────────┐
-│ trim-galore │
-└─────────────┘
-END &>> report.log
-    bash $SCRIPT_DIR/script/trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> report.log
+########
+#single
+########
+if [[ $PAIREND_OPTION == "single" ]] ; then
 
-elif [[ $TRIM_OPTION == "fastp" ]] ; then
-    #fastp
-    cat << END
-┌───────┐
-│ fastp │
-└───────┘
-END &>> report.log
-    bash $SCRIPT_DIR/script/fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL &>> report.log
+    if [[ `cat $SRA_LIST_PATH | wc -l` -ne `find $OUTPUT_DIR/fastaq -type f | wc -l` ]] ; then
+        echo "Would you choose pairend SRR list?" &>> $OUTPUT_DIR/report.log
+        exit 1
+    fi
+
+    if [[ $TRIM_OPTION == "trim_galore" ]] ; then
+        #trim-galore
+        printf '\n%s\n\n' "trim-galore" &>> $OUTPUT_DIR/report.log
+        bash $SCRIPT_DIR/script/trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> $OUTPUT_DIR/report.log
+
+    elif [[ $TRIM_OPTION == "fastp" ]] ; then
+        #fastp
+        printf '\n%s\n\n' "fastp" &>> $OUTPUT_DIR/report.log
+        bash $SCRIPT_DIR/script/fastp.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
+
+    fi
+
+########
+#pair
+########
+elif [[ $PAIREND_OPTION == "pair" ]] ; then
+
+    if [[ `cat $SRA_LIST_PATH | wc -l` -eq `find $OUTPUT_DIR/fastaq -type f | wc -l` ]] ; then
+        echo "Would you choose single-end SRR list?" &>> $OUTPUT_DIR/report.log
+        exit 1
+    fi
+
+    if [[ $TRIM_OPTION == "trim_galore" ]] ; then
+        #trim-galore
+        printf '\n%s\n\n' "trim-galore" &>> $OUTPUT_DIR/report.log
+        bash $SCRIPT_DIR/script/trim_galore_pair.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_LIST_PATH &>> $OUTPUT_DIR/report.log
+
+    elif [[ $TRIM_OPTION == "fastp" ]] ; then
+        #fastp
+        printf '\n%s\n\n' "fastp" &>> $OUTPUT_DIR/report.log
+        bash $SCRIPT_DIR/script/fastp_pair.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
+
+    fi
 
 fi
 
 #fastqc
-cat << END
-┌────────┐
-│ fastqc │
-└────────┘
-END &>> report.log
-bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> report.log
+printf '\n%s\n\n' "fastqc" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/fastqc.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> $OUTPUT_DIR/report.log
 
 #multiqc
-cat << END
-┌─────────┐
-│ multiqc │
-└─────────┘
-END &>> report.log
-bash $SCRIPT_DIR/script/multiqc_trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR &>> report.log
+printf '\n%s\n\n' "multiqc" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/multiqc_trim_galore.sh $CONDA_INIT_PATH $OUTPUT_DIR &>> $OUTPUT_DIR/report.log
 
 #multiqc_report
-bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR &>> report.log
+bash $SCRIPT_DIR/script/multiqc_report.sh $CONDA_INIT_PATH $OUTPUT_DIR $SCRIPT_DIR &>> $OUTPUT_DIR/report.log
 
 #judge binary
 REFERENCE_GENOME_PATH_BINARY=false
@@ -280,43 +291,34 @@ fi
 REFERENCE_GENOME_PATH=`bash $SCRIPT_DIR/script/decompress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL`
 GENOME_ANNOTATION_PATH=`bash $SCRIPT_DIR/script/decompress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL`
 
-#hisat2
-cat << END
-┌────────┐
-│ hisat2 │
-└────────┘
-END &>> report.log
-bash $SCRIPT_DIR/script/hisat.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH $SRA_LIST_PATH &>> report.log
+if [[ $PAIREND_OPTION == "single" ]] ; then
+    #hisat2
+    printf '\n%s\n\n' "hisat2" &>> $OUTPUT_DIR/report.log
+    bash $SCRIPT_DIR/script/hisat.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH $SRA_LIST_PATH &>> $OUTPUT_DIR/report.log
+
+elif [[ $PAIREND_OPTION == "pair" ]] ; then
+    #hisat2
+    printf '\n%s\n\n' "hisat2" &>> $OUTPUT_DIR/report.log
+    bash $SCRIPT_DIR/script/hisat_pair.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $REFERENCE_GENOME_PATH $SRA_LIST_PATH &>> $OUTPUT_DIR/report.log
+fi
 
 #samtools
-cat << END
-┌──────────┐
-│ samtools │
-└──────────┘
-END &>> report.log
-bash $SCRIPT_DIR/script/samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_LIST_PATH &>> report.log
+printf '\n%s\n\n' "samtools" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_LIST_PATH &>> $OUTPUT_DIR/report.log
 
 #stringtie
-cat << END
-┌───────────┐
-│ stringtie │
-└───────────┘
-END &>> report.log
-bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $GENOME_ANNOTATION_PATH $PARALLEL &>> report.log
+printf '\n%s\n\n' "stringtie" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $GENOME_ANNOTATION_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
 
 #compress refernece
 if [[ "$REFERENCE_GENOME_PATH_BINARY" == "true" ]] ; then
-    bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL &>> report.log
+    bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $REFERENCE_GENOME_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
 fi
 
 if [[ "$GENOME_ANNOTATION_PATH_BINARY" == "true" ]] ; then
-    bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL &>> report.log
+    bash $SCRIPT_DIR/script/compress.sh $CONDA_INIT_PATH $GENOME_ANNOTATION_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
 fi
 
 #archive
-cat << END
-┌────────────────────┐
-│ archive & compress │
-└────────────────────┘
-END &>> report.log
-bash $SCRIPT_DIR/script/archive.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> report.log
+printf '\n%s\n\n' "archive" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/archive.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> $OUTPUT_DIR/report.log
