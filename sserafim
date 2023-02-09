@@ -52,7 +52,7 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 
 -c CONDA_INIT_PATH  if printed error "you have to check ...",please reset path.
                     "~/{YOUR CONDA PACKAGE}/etc/profile.d/conda.sh"
--p PARALLEL (int)   set using CPU core(default: 1)
+-@ PARALLEL (int)   set using CPU core(default: 1)
 -P PAIREND_OPTION   change into pairend mode (default: single-end)
 -f TRIM_OPTION      change trimming software into fastp (default: trim-galore)
 -h HELP             show help                 
@@ -129,7 +129,7 @@ TRIM_OPTION=fastp
 PAIREND_OPTION=single
 PARALLEL=1
 
-while getopts :o:s:p:g:c:a:fhPV option
+while getopts :o:s:@:g:c:a:fhPV option
 do
     case "$option" in
         o)
@@ -150,7 +150,7 @@ do
         c)
             CONDA_INIT_PATH=$OPTARG
             ;;
-        p)
+        @)
             PARALLEL=$OPTARG
             ;;
         P)
