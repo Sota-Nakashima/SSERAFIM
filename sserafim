@@ -34,7 +34,7 @@ Inside of this program,sra-tools,trim-galore,fastqc,multiqc,fastp,hisat2 and str
 If you want to choose another parameters in each process, please rewrite programs by yourself.
 
 Example
-    sserafim [OPTION] [-s SRA_LIST_PATH] [-t 10] 
+    sserafim [OPTION] [-s SRA_LIST_PATH] [-p 10] 
     [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
 
 OPTION
@@ -52,8 +52,8 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 
 -c CONDA_INIT_PATH  if printed error "you have to check ...",please reset path.
                     "~/{YOUR CONDA PACKAGE}/etc/profile.d/conda.sh"
--t THREAD (int)     set using CPU core(default: 1)
--p PAIREND_OPTION   change into pairend mode (default: single-end)
+-p PARALLEL (int)   set using CPU core(default: 1)
+-P PAIREND_OPTION   change into pairend mode (default: single-end)
 -f TRIM_OPTION      change trimming software into fastp (default: trim-galore)
 -h HELP             show help                 
 -V VERSION          shoe version
@@ -80,7 +80,7 @@ print_short_help()
 {
     cat << END
 Example
-    sserafim [OPTION] [-s SRA_LIST_PATH] [-t 10] 
+    sserafim [OPTION] [-s SRA_LIST_PATH] [-p 10] 
     [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
 
 OPTION
@@ -98,8 +98,8 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 
 -c CONDA_INIT_PATH  if printed error "you have to check ...",please reset path.
                     "~/{YOUR CONDA PACKAGE}/etc/profile.d/conda.sh"
--t THREAD (int)     set using CPU core(default: 1)
--p PAIREND_OPTION   change into pairend mode (default: single-end)
+-p PARALLEL (int)   set using CPU core(default: 1)
+-P PAIREND_OPTION   change into pairend mode (default: single-end)
 -f TRIM_OPTION      change trimming software into trim-galore (default: fastp)
 -h HELP             show help                 
 -V VERSION          shoe version
@@ -129,7 +129,7 @@ TRIM_OPTION=fastp
 PAIREND_OPTION=single
 PARALLEL=1
 
-while getopts :o:s:t:g:c:a:fhpV option
+while getopts :o:s:p:g:c:a:fhPV option
 do
     case "$option" in
         o)
@@ -150,10 +150,10 @@ do
         c)
             CONDA_INIT_PATH=$OPTARG
             ;;
-        t)
+        p)
             PARALLEL=$OPTARG
             ;;
-        p)
+        P)
             PAIREND_OPTION=pair
             ;;
         f)
