@@ -25,8 +25,9 @@ IFS=$' \t\n'
 
 for line in "${file[@]}"; do
     hisat2 -x $REFERENCE_DIR/gene_idx \
-    -U "$OUTPUT_DIR/fastaq_trim/${line}_trimmed.fq.gz" \
+    -1 $OUTPUT_DIR/fastaq_trim/${line}_1_trimmed.fq.gz \
+    -2 $OUTPUT_DIR/fastaq_trim/${line}_2_trimmed.fq.gz \
     -p "$PARALLEL" \
     -S "$OUTPUT_DIR_SAM/${line}.sam" \
-    --dta
+    --dta --rna-strandness FR
 done
