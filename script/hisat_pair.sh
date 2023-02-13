@@ -29,5 +29,5 @@ for line in "${file[@]}"; do
     -2 $OUTPUT_DIR/fastaq_trim/${line}_2_trimmed.fq.gz \
     -p "$PARALLEL" \
     -S "$OUTPUT_DIR_SAM/${line}.sam" \
-    --dta --rna-strandness FR
+    --dta --rna-strandness FR --no-spliced-alignment
 done
