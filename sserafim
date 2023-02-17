@@ -14,7 +14,7 @@ echo $conda_init_path
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=0.2.0
+readonly VERSION=0.2.1
 
 print_help()
 {
@@ -46,7 +46,7 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 #########################################################
 -s SRA_LIST_PATH (.txt)                                         
 -g REFERENCE_GENOME_PATH (.fasta/fasta.gz)                      
--a GENOME_ANNOTATION_PATH (.gff3 or .gtf/.gff3.gz or .gtf.gz) 
+-a GENOME_ANNOTATION_PATH (.gtf or .gtf.gz) 
 #########################################################
 
 
@@ -92,7 +92,7 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 #########################################################
 -s SRA_LIST_PATH (.txt)                                         
 -g REFERENCE_GENOME_PATH (.fasta/fasta.gz)                      
--a GENOME_ANNOTATION_PATH (.gff3 or .gtf/.gff3.gz or .gtf.gz) 
+-a GENOME_ANNOTATION_PATH (.gtf or .gtf.gz) 
 #########################################################
 
 
@@ -309,6 +309,10 @@ bash $SCRIPT_DIR/script/samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_
 #stringtie
 printf '\n%s\n\n' "stringtie" &>> $OUTPUT_DIR/report.log
 bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $GENOME_ANNOTATION_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
+
+#bedops
+printf '\n%s\n\n' "bedops" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/bedops.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH
 
 #compress refernece
 if [[ "$REFERENCE_GENOME_PATH_BINARY" == "true" ]] ; then
