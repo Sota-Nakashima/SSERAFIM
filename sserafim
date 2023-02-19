@@ -10,7 +10,6 @@ for S in $(seq 0 $list_number); do
 done
 
 CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
-echo $conda_init_path
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
