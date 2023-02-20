@@ -10,7 +10,6 @@ for S in $(seq 0 $list_number); do
 done
 
 CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
-echo $conda_init_path
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
@@ -178,6 +177,9 @@ do
     esac
 done
 
+#confirm path, directory exist
+##########################################
+
 if [[ "${SET_SRA_LIST_PATH}" != "true" || "${SET_REFERENCE_GENOME_PATH}" != "true" || "${SET_GENOME_ANNOTATION_PATH}" != "true" ]] ; then
     printf '%s\n\n' "${SCRIPT_NAME}: need more option" 1>&2
     print_short_help
@@ -196,14 +198,13 @@ if [[ ! -e $CONDA_INIT_PATH ]] ; then
     exit 1
 fi
 
-#########################################
-
 if [[ -d "$OUTPUT_DIR" ]] ; then
     printf '%s\n' "${SCRIPT_NAME}: the same directory is already exist." 1>&2
     exit 1
 fi
-#better mkdir -p ?
 
+##########################################
+#make parent directory
 mkdir -p "$OUTPUT_DIR"
 
 #prefetch
