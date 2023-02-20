@@ -312,7 +312,7 @@ bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH
 
 #bedops
 printf '\n%s\n\n' "bedops" &>> $OUTPUT_DIR/report.log
-bash $SCRIPT_DIR/script/bedops.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH
+bash $SCRIPT_DIR/script/bedops.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH &>> $OUTPUT_DIR/report.log
 
 #compress refernece
 if [[ "$REFERENCE_GENOME_PATH_BINARY" == "true" ]] ; then

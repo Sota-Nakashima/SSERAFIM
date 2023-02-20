@@ -18,5 +18,6 @@ file=(`cat "$SRA_LIST_PATH"`)
 IFS=$' \t\n'
 
 for line in "${file[@]}"; do
-    gtf2bed < $OUTPUT_DIR/result/gtf/${line}.gtf > $OUTPUT_DIR_BED/${line}.bed
+    gtf2bed --max-mem 1G --sort-tmpdir=${PWD} \
+    < $OUTPUT_DIR/result/gtf/${line}.gtf > $OUTPUT_DIR_BED/${line}.bed
 done
