@@ -10,11 +10,10 @@ for S in $(seq 0 $list_number); do
 done
 
 CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
-echo $conda_init_path
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=0.2.0
+readonly VERSION=0.2.1
 
 print_help()
 {
@@ -46,7 +45,7 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 #########################################################
 -s SRA_LIST_PATH (.txt)                                         
 -g REFERENCE_GENOME_PATH (.fasta/fasta.gz)                      
--a GENOME_ANNOTATION_PATH (.gff3 or .gtf/.gff3.gz or .gtf.gz) 
+-a GENOME_ANNOTATION_PATH (.gtf or .gtf.gz) 
 #########################################################
 
 
@@ -92,7 +91,7 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 #########################################################
 -s SRA_LIST_PATH (.txt)                                         
 -g REFERENCE_GENOME_PATH (.fasta/fasta.gz)                      
--a GENOME_ANNOTATION_PATH (.gff3 or .gtf/.gff3.gz or .gtf.gz) 
+-a GENOME_ANNOTATION_PATH (.gtf or .gtf.gz) 
 #########################################################
 
 
@@ -178,6 +177,9 @@ do
     esac
 done
 
+#confirm path, directory exist
+##########################################
+
 if [[ "${SET_SRA_LIST_PATH}" != "true" || "${SET_REFERENCE_GENOME_PATH}" != "true" || "${SET_GENOME_ANNOTATION_PATH}" != "true" ]] ; then
     printf '%s\n\n' "${SCRIPT_NAME}: need more option" 1>&2
     print_short_help
@@ -196,14 +198,13 @@ if [[ ! -e $CONDA_INIT_PATH ]] ; then
     exit 1
 fi
 
-#########################################
-
 if [[ -d "$OUTPUT_DIR" ]] ; then
     printf '%s\n' "${SCRIPT_NAME}: the same directory is already exist." 1>&2
     exit 1
 fi
-#better mkdir -p ?
 
+##########################################
+#make parent directory
 mkdir -p "$OUTPUT_DIR"
 
 #prefetch
@@ -309,6 +310,10 @@ bash $SCRIPT_DIR/script/samtools.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $SRA_
 #stringtie
 printf '\n%s\n\n' "stringtie" &>> $OUTPUT_DIR/report.log
 bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $GENOME_ANNOTATION_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
+
+#bedops
+printf '\n%s\n\n' "bedops" &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/bedops.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH &>> $OUTPUT_DIR/report.log
 
 #compress refernece
 if [[ "$REFERENCE_GENOME_PATH_BINARY" == "true" ]] ; then

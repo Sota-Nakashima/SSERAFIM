@@ -13,6 +13,11 @@ conda activate bio
 
 mkdir $OUTPUT_DIR_TRIM_FASTQ $OUTPUT_DIR_HTML $OUTPUT_DIR_JSON
 
+#matching parallel number to fastp
+if [[ $((PARALLEL)) -gt 16 ]] ; then
+    PARALLEL=16
+fi
+
 #change IFS and input sra quary
 IFS=$'\n'
 file=(`cat "$SRA_LIST_PATH"`)

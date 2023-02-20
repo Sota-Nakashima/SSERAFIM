@@ -19,7 +19,7 @@ file=(`cat "$SRA_LIST_PATH"`)
 IFS=$' \t\n'
 
 for line in "${file[@]}"; do
-    stringtie "$OUTPUT_DIR/bam/${line}.bam" -e -m 30 \
+    stringtie "$OUTPUT_DIR/bam/${line}.bam" -e \
     -G "$GENOME_ANNOTATION_PATH" \
     -o "$OUTPUT_DIR_RESULT/gtf/${line}.gtf" \
     -A "$OUTPUT_DIR_RESULT/tsv/${line}.tsv" \
