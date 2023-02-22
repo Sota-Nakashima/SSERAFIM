@@ -13,7 +13,7 @@ CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=0.2.1
+readonly VERSION=0.3.0
 
 print_help()
 {
@@ -37,7 +37,7 @@ Example
     [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
 
 OPTION
--o OUTPUT_DIR       set output directory(default: ./SSERAFIM)
+-o OUTPUT_DIR       Set output directory(default: ./SSERAFIM)
 
 #########################################################
 CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
@@ -49,13 +49,14 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 #########################################################
 
 
--c CONDA_INIT_PATH  if printed error "you have to check ...",please reset path.
+-c CONDA_INIT_PATH  If sserafim printed error "you have to check ...", please reset path.
                     "~/{YOUR CONDA PACKAGE}/etc/profile.d/conda.sh"
--@ PARALLEL (int)   set using CPU core(default: 1)
--P PAIREND_OPTION   change into pairend mode (default: single-end)
--f TRIM_OPTION      change trimming software into fastp (default: trim-galore)
--h HELP             show help                 
--V VERSION          show version
+-@ PARALLEL (int)   Set using CPU core(default: 1)
+-L LIGHT_MODE       Don't make law_data.tar.gz
+-P PAIREND_OPTION   Change into pairend mode (default: single-end)
+-f TRIM_OPTION      Change trimming software into fastp (default: fastp)
+-h HELP             Show help                 
+-V VERSION          Show version
 
 ##################
 RESULT_DIRECTORY
@@ -64,11 +65,12 @@ OUTPUT_DIR
 │
 ├─── result
 │       ├─── ballgrown
+│       ├─── bam
 │       ├─── gff
 │       ├─── multiqc
-│       ├─── report.log
 │       └─── tsv
 ├─── (caution_report_multiqc.tsv)
+├─── report.log
 └─── law_data.tar.gz (This directory is very large size. Please warn when decompressing.)
 If fasta file quality is not good, sserafim output "caution_report_multiqc.tsv".
 Please check when you analyze results.
@@ -83,7 +85,7 @@ Example
     [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
 
 OPTION
--o OUTPUT_DIR       set output directory(default: ./SSERAFIM)
+-o OUTPUT_DIR       Set output directory(default: ./SSERAFIM)
 
 #########################################################
 CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
@@ -95,13 +97,14 @@ CAUTION : YOU HAVE TO SET THESE PARAMETERS ABSOLUTELY!!
 #########################################################
 
 
--c CONDA_INIT_PATH  if printed error "you have to check ...",please reset path.
+-c CONDA_INIT_PATH  If sserafim printed error "you have to check ...", please reset path.
                     "~/{YOUR CONDA PACKAGE}/etc/profile.d/conda.sh"
--@ PARALLEL (int)   set using CPU core(default: 1)
--P PAIREND_OPTION   change into pairend mode (default: single-end)
--f TRIM_OPTION      change trimming software into trim-galore (default: fastp)
--h HELP             show help                 
--V VERSION          show version
+-@ PARALLEL (int)   Set using CPU core(default: 1)
+-L LIGHT_MODE       Don't make law_data.tar.gz
+-P PAIREND_OPTION   Change into pairend mode (default: single-end)
+-f TRIM_OPTION      Change trimming software into fastp (default: fastp)
+-h HELP             Show help                 
+-V VERSION          Show version
 END
 }
 print_version()
@@ -126,9 +129,10 @@ SET_REFERENCE_GENOME_PATH=false
 SET_GENOME_ANNOTATION_PATH=false
 TRIM_OPTION=fastp
 PAIREND_OPTION=single
+LIGHT_MODE=off
 PARALLEL=1
 
-while getopts :o:s:@:g:c:a:fhPV option
+while getopts :o:s:@:g:c:a:fhLPV option
 do
     case "$option" in
         o)
@@ -157,6 +161,9 @@ do
             ;;
         f)
             TRIM_OPTION=trim_galore
+            ;;
+        L)
+            LIGHT_MODE=on
             ;;
         h)
             print_help
@@ -313,7 +320,7 @@ bash $SCRIPT_DIR/script/stringtie.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH
 
 #bedops
 printf '\n%s\n\n' "bedops" &>> $OUTPUT_DIR/report.log
-bash $SCRIPT_DIR/script/bedops.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/bedops.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
 
 #compress refernece
 if [[ "$REFERENCE_GENOME_PATH_BINARY" == "true" ]] ; then
@@ -326,4 +333,4 @@ fi
 
 #archive
 printf '\n%s\n\n' "archive" &>> $OUTPUT_DIR/report.log
-bash $SCRIPT_DIR/script/archive.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL &>> $OUTPUT_DIR/report.log
+bash $SCRIPT_DIR/script/archive.sh $CONDA_INIT_PATH $OUTPUT_DIR $PARALLEL $LIGHT_MODE &>> $OUTPUT_DIR/report.log

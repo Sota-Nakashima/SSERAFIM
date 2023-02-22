@@ -12,7 +12,7 @@ mkdir $OUTPUT_DIR
 
 #convert sra to fastaq (-e options mean multithlead)
 for filepath in $SRA_DIR; do
-    fasterq-dump -e "$PARALLEL" $filepath -O "$OUTPUT_DIR"
+    fasterq-dump -e "$PARALLEL" $filepath -O "$OUTPUT_DIR" -t $OUTPUT_DIR
 done
 
 pigz -r "$OUTPUT_DIR" -p "$PARALLEL"
