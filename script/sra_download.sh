@@ -12,16 +12,16 @@ fi
 
 mkdir $OUTPUT_DIR
 
-source $CONDA_INIT_PATH
-conda activate bio
-
 #export var and function
 ##############################
+export CONDA_INIT_PATH
 export OUTPUT_DIR
 export PARALLEL
 
 sra_download()
 {
+    source $CONDA_INIT_PATH
+    conda activate bio
     prefetch --output-directory $OUTPUT_DIR "$1"
 }
 

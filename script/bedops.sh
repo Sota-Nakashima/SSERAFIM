@@ -11,20 +11,19 @@ if [[ $((PARALLEL)) -gt 10 ]]; then
     PARALLEL=10
 fi
 
-source $CONDA_INIT_PATH
-
-conda activate bio
-
 mkdir $OUTPUT_DIR_BED
 
 export OUTPUT_DIR
 export OUTPUT_DIR_BED
 export PARALLEL
+export CONDA_INIT_PATH
 
 # if os error by memory leak, rewrite --max-mem option.
 # https://www.biostars.org/p/95496/
 make_bed_format()
 {
+    source $CONDA_INIT_PATH
+    conda activate bio
     gtf2bed --max-mem 500M --sort-tmpdir=${OUTPUT_DIR_BED} \
     < $OUTPUT_DIR/result/gtf/$1.gtf > $OUTPUT_DIR_BED/$1.bed
 }
