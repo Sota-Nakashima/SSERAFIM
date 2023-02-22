@@ -6,6 +6,11 @@ OUTPUT_DIR_BED="$2/result/bed"
 SRA_LIST_PATH="$3"
 PARALLEL=$4
 
+#matching parallel number to prefetch
+if [[ $((PARALLEL)) -gt 10 ]]; then
+    PARALLEL=10
+fi
+
 source $CONDA_INIT_PATH
 
 conda activate bio
