@@ -13,7 +13,7 @@ CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=0.3.0
+readonly VERSION=0.3.1
 
 print_help()
 {
@@ -183,6 +183,17 @@ do
             ;;
     esac
 done
+
+#judge parallel int
+##########################################
+if [[ ! "$PARALLEL" =~ ^[0-9]+$ ]]; then
+    printf '%s\n\n' "${SCRIPT_NAME}: parallel option need integer more than 0" 1>&2
+    print_short_help
+    exit 1   
+fi
+
+##########################################
+
 
 #confirm path, directory exist
 ##########################################
