@@ -7,10 +7,10 @@ SRA_LIST_PATH="$3"
 GENOME_ANNOTATION_PATH="$4"
 PARALLEL=$5
 
-if [[ $((PARALLEL)) -lt 6 ]] ; then
+if [[ $((PARALLEL)) -lt 8 ]] ; then
     KWORKERS=1
 else
-    KWORKERS=$(($PARALLEL / 3))
+    KWORKERS=$(($PARALLEL / 4))
     PARALLEL=$(($PARALLEL / $KWORKERS))
 fi
 
