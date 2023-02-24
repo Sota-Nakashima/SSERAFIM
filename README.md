@@ -4,7 +4,7 @@ SSERAFIM
 #  Overview
 High-performance bioinfo tool.  
 Easy analysis of gene expression.
-![img](https://github.com/Sota-Nakashima/SSERAFIM/blob/ver0.3.2/png/RNAseq_workflow.png)
+![img](https://github.com/Sota-Nakashima/SSERAFIM/blob/images/RNAseq.png)
 
 ## Description
 This tool simplifies and automates the workflow of gene expression analysis.
