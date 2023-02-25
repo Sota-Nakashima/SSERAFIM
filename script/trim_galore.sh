@@ -11,7 +11,7 @@ if [[ $((PARALLEL)) -gt 5 ]]; then
 fi
 
 source $CONDA_INIT_PATH
-conda activate bio
+conda activate sserafim
 
 mkdir $OUTPUT_DIR
 

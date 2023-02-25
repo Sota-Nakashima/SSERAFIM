@@ -9,7 +9,7 @@ SRA_LIST_PATH="$3"
 PARALLEL=$4
 
 source $CONDA_INIT_PATH
-conda activate bio
+conda activate sserafim
 
 mkdir $OUTPUT_DIR_TRIM_FASTQ $OUTPUT_DIR_HTML $OUTPUT_DIR_JSON
 

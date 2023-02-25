@@ -19,7 +19,7 @@ if [[ "$LIGHT_MODE" == "off" ]] ; then
 
     printf '\n%s\n\n' "LIGHT_MODE: off"
     source $CONDA_INIT_PATH
-    conda activate bio
+    conda activate sserafim
 
     cd $OUTPUT_DIR
     #archive

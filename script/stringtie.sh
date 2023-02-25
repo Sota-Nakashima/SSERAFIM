@@ -26,7 +26,7 @@ export KWORKERS
 stringtie_parallel()
 {
     source $CONDA_INIT_PATH
-    conda activate bio
+    conda activate sserafim
     stringtie "$OUTPUT_DIR/bam/$1.bam" -e \
     -G "$GENOME_ANNOTATION_PATH" \
     -o "$OUTPUT_DIR_RESULT/gtf/$1.gtf" \

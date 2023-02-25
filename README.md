@@ -1,7 +1,7 @@
 SSERAFIM
 ====
 [![Version](https://img.shields.io/badge/stable-main-gree)](https://github.com/Sota-Nakashima/SSERAFIM)
-[![Version](https://img.shields.io/badge/OS-MacOS,Linux-gree)](https://github.com/Sota-Nakashima/SSERAFIM)
+[![Version](https://img.shields.io/badge/OS-Linux-gree)](https://github.com/Sota-Nakashima/SSERAFIM)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENCE)
 #  Overview
 High-performance bioinfo tool.  
@@ -18,9 +18,9 @@ Although this tool only supports a single species, it can be used to analyze mul
 
 ## Demo
 1. Prepare SRR-List, Reference Genome, and Annotation Data  
-   SRR List can be download from [SRA Run Selector](https://0-www-ncbi-nlm-nih-gov.brum.beds.ac.uk/Traces/study/)  
-   Reference Genome can be download from [Ensemble](http://asia.ensembl.org/index.html)  
-   Annotation Data can be download from [Ensemble](http://asia.ensembl.org/index.html)
+   - SRR List can be download from [SRA Run Selector](https://0-www-ncbi-nlm-nih-gov.brum.beds.ac.uk/Traces/study/)  
+   - Reference Genome can be download from [Ensemble](http://asia.ensembl.org/index.html)  
+   - Annotation Data can be download from [Ensemble](http://asia.ensembl.org/index.html)
 
    Of course, you can use the file format from other sites as long as the file formats match. However, please make sure that the chromosome information match between the Reference Genome and the Annotation Data.
 

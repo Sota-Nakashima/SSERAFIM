@@ -6,7 +6,7 @@ SRA_DIR="$2/sra/*"
 PARALLEL=$3
 
 source $CONDA_INIT_PATH
-conda activate bio
+conda activate sserafim
 
 mkdir $OUTPUT_DIR
 
