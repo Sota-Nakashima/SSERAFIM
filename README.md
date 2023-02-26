@@ -19,6 +19,7 @@ Although this tool only supports a single species, it can be used to analyze mul
 ## Demo
 1. Prepare SRR-List, Reference Genome, and Annotation Data  
    - SRR List can be download from [SRA Run Selector](https://0-www-ncbi-nlm-nih-gov.brum.beds.ac.uk/Traces/study/)  
+   ![img](https://github.com/Sota-Nakashima/SSERAFIM/blob/images/SRR_LIST.png) 
    - Reference Genome can be download from [Ensemble](http://asia.ensembl.org/index.html)  
    - Annotation Data can be download from [Ensemble](http://asia.ensembl.org/index.html)
 
@@ -26,7 +27,7 @@ Although this tool only supports a single species, it can be used to analyze mul
 
 2. Run SSERAFIM
    ```bash:usage.sh
-   sserafim -t ~/SSR_List.txt -g ~/Homo_sapiens.GRCh38.dna.toplevel.fa.gz　-a ~/Homo_sapiens.GRCh38.109.gtf.gz -@ 20
+   sserafim -t ~/SRR_Acc_List.txt -g ~/Homo_sapiens.GRCh38.dna.toplevel.fa.gz　-a ~/Homo_sapiens.GRCh38.109.gtf.gz -@ 20
    ```
 ## Requirement
 SSERAFIM works on conda, [conda-forge](https://github.com/conda-forge) and [bioconda](https://github.com/bioconda).  
