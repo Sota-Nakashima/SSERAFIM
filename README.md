@@ -81,7 +81,11 @@ OUTPUT_DIR
 * Size of law_data.tar.gz is very large. Please warn when decompressing.
 * If fasta file quality is not good, sserafim output "caution_report_multiqc.tsv".Please check when you analyze results.
 ## Install
-* create virtual environment in conda by using 
+* create virtual environment in conda by using [yaml file](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/sserafim.yml.)
+  ```bash:sserafim_install.sh
+  conda env create -f=sserafim.yml
+  ```
+   
 * use docker (still getting ready)
 
 ## Benchmark
