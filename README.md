@@ -41,6 +41,7 @@ SSERAFIM strongly depends mainly on the following libraries.
 * [hisat2](https://github.com/DaehwanKimLab/hisat2)
 * [samtools](https://github.com/samtools/samtools)
 * [stringtie](https://github.com/gpertea/stringtie)
+* [bedops](https://github.com/bedops)
 ## Usage
 ```bash:usage.sh
 sserafim [OPTION] [-s SRA_LIST_PATH] [-@ 10] [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
