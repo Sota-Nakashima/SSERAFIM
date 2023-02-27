@@ -86,7 +86,8 @@ OUTPUT_DIR
   conda env create -f=sserafim.yml
   ```
    
-* Use docker (still getting ready)
+* Use docker  
+  Please see [this page](https://github.com/Sota-Nakashima/SEERAFIM_AESPA_docker).
 
 ## Benchmark
 Still getting ready
