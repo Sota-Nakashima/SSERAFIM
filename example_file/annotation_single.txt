@@ -1,0 +1,8 @@
+/home/nakashima/Lab/data_raw/annotation_gtf/gallus_gallus.GRCg6a.gtf.gz
+/home/nakashima/Lab/data_raw/annotation_gtf/gorilla_gorilla.gorGor4.gtf.gz
+/home/nakashima/Lab/data_raw/annotation_gtf/homo_sapiens.GRCh38.gtf.gz
+/home/nakashima/Lab/data_raw/annotation_gtf/macaca_mulatta.Mmul_10.gtf.gz
+/home/nakashima/Lab/data_raw/annotation_gtf/monodelphis_domestica.ASM229v1.gtf.gz
+/home/nakashima/Lab/data_raw/annotation_gtf/mus_musculus.GRCm39.gtf.gz
+/home/nakashima/Lab/data_raw/annotation_gtf/ornithorhynchus_anatinus.mOrnAna1.p.v1.gtf.gz
+/home/nakashima/Lab/data_raw/annotation_gtf/xenopus_tropicalis.Xenopus_tropicalis_v9.1.gtf.gz

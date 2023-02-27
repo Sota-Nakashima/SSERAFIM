@@ -1,0 +1,1 @@
+/home/nakashima/Lab/data_raw/reference_genome/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
