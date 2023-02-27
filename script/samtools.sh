@@ -16,7 +16,7 @@ file=(`cat "$SRA_LIST_PATH"`)
 IFS=$' \t\n'
 
 source $CONDA_INIT_PATH
-conda activate bio
+conda activate sserafim
 
 for line in "${file[@]}"; do
     samtools sort "$OUTPUT_DIR_SAM/${line}.sam" \

@@ -21,7 +21,7 @@ export PARALLEL
 sra_download()
 {
     source $CONDA_INIT_PATH
-    conda activate bio
+    conda activate sserafim
     prefetch --output-directory $OUTPUT_DIR "$1"
 }
 

@@ -23,7 +23,7 @@ export CONDA_INIT_PATH
 make_bed_format()
 {
     source $CONDA_INIT_PATH
-    conda activate bio
+    conda activate sserafim
     gtf2bed --max-mem 500M --sort-tmpdir=${OUTPUT_DIR_BED} \
     < $OUTPUT_DIR/result/gtf/$1.gtf > $OUTPUT_DIR_BED/$1.bed
 }

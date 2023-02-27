@@ -4,7 +4,7 @@ CONDA_INIT_PATH="$1"
 OUTPUT_DIR="$2/multiqc"
 
 source $CONDA_INIT_PATH
-conda activate bio
+conda activate sserafim
 
 mkdir $OUTPUT_DIR
 

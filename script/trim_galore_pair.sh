@@ -12,7 +12,7 @@ if [[ $((PARALLEL)) -gt 8 ]]; then
 fi
 
 source $CONDA_INIT_PATH
-conda activate bio
+conda activate sserafim
 
 #change IFS and input sra quary
 IFS=$'\n'

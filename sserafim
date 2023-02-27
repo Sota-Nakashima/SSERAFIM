@@ -13,7 +13,7 @@ CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=0.3.1
+readonly VERSION=0.3.2
 
 print_help()
 {
@@ -33,7 +33,7 @@ Inside of this program,sra-tools,trim-galore,fastqc,multiqc,fastp,hisat2 and str
 If you want to choose another parameters in each process, please rewrite programs by yourself.
 
 Example
-    sserafim [OPTION] [-s SRA_LIST_PATH] [-p 10] 
+    sserafim [OPTION] [-s SRA_LIST_PATH] [-@ 10] 
     [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
 
 OPTION
@@ -81,7 +81,7 @@ print_short_help()
 {
     cat << END
 Example
-    sserafim [OPTION] [-s SRA_LIST_PATH] [-p 10] 
+    sserafim [OPTION] [-s SRA_LIST_PATH] [-@ 10] 
     [-g GENOME_REFERENCE_PATH] [-a GENOME_ANNOTATION_PATH]
 
 OPTION

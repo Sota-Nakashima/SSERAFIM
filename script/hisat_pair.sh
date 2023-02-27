@@ -9,7 +9,7 @@ REFERENCE_GENOME_PATH=$4
 SRA_LIST_PATH=$5
 
 source $CONDA_INIT_PATH
-conda activate bio
+conda activate sserafim
 
 mkdir $REFERENCE_DIR $OUTPUT_DIR_SAM
 
