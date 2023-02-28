@@ -7,22 +7,56 @@ SRA_LIST_PATH="$3"
 GENOME_ANNOTATION_PATH="$4"
 PARALLEL=$5
 
-source $CONDA_INIT_PATH
-conda activate bio
+#########################
+
+# PARALLEL devide KWORKER(thread for xarg)
+# PARALLEL(old) is greater than PARALLEL(New) multiplier KWORKER
+
+# Stringtie couldn't create the file as it was, 
+# so I put a delay outside of the first process.
+
+#ver0.4.0
+#########################
+if [[ $((PARALLEL)) -lt 8 ]] ; then
+    KWORKERS=1
+else
+    KWORKERS=$(($PARALLEL / 4))
+    PARALLEL=$(($PARALLEL / $KWORKERS))
+fi
 
 mkdir $OUTPUT_DIR_RESULT
 
-#change IFS and input sra quary
-IFS=$'\n'
-file=(`cat "$SRA_LIST_PATH"`)
-#return IFS default
-IFS=$' \t\n'
+export CONDA_INIT_PATH
+export OUTPUT_DIR
+export OUTPUT_DIR_RESULT
+export GENOME_ANNOTATION_PATH
+export PARALLEL
+export KWORKERS
 
-for line in "${file[@]}"; do
-    stringtie "$OUTPUT_DIR/bam/${line}.bam" -e \
-    -G "$GENOME_ANNOTATION_PATH" \
-    -o "$OUTPUT_DIR_RESULT/gtf/${line}.gtf" \
-    -A "$OUTPUT_DIR_RESULT/tsv/${line}.tsv" \
-    -b "$OUTPUT_DIR_RESULT/Ballgown/${line}" \
-    -p "$PARALLEL"
-done
+stringtie_parallel()
+{
+    source $CONDA_INIT_PATH
+    conda activate bio
+    if [[ "$2" == "@" ]] ; then
+        # delay
+        sleep 10
+        stringtie "$OUTPUT_DIR/bam/$1.bam" -e \
+        -G "$GENOME_ANNOTATION_PATH" \
+        -o "$OUTPUT_DIR_RESULT/gtf/$1.gtf" \
+        -A "$OUTPUT_DIR_RESULT/tsv/$1.tsv" \
+        -b "$OUTPUT_DIR_RESULT/Ballgown/$1" \
+        -p "$PARALLEL"
+    else
+        stringtie "$OUTPUT_DIR/bam/$1.bam" -e \
+        -G "$GENOME_ANNOTATION_PATH" \
+        -o "$OUTPUT_DIR_RESULT/gtf/$1.gtf" \
+        -A "$OUTPUT_DIR_RESULT/tsv/$1.tsv" \
+        -b "$OUTPUT_DIR_RESULT/Ballgown/$1" \
+        -p "$PARALLEL"
+    fi        
+}
+
+export -f stringtie_parallel
+
+cat $SRA_LIST_PATH | sed -e 's/$/ @/' |  sed -e "1 s/@/%/g" \
+| xargs -P $KWORKERS -L 1 -I {} bash -c "stringtie_parallel {}"
