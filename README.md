@@ -87,7 +87,7 @@ OUTPUT_DIR
   ```
    
 * Use docker  
-  Please see [this page](https://github.com/Sota-Nakashima/SEERAFIM_AESPA_docker).
+  Please see [this page](https://github.com/Sota-Nakashima/Docker).
 
 ## Benchmark
 Still getting ready
