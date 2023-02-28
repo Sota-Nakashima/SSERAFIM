@@ -1,8 +1,0 @@
-/home/nakashima/Lab/data_raw/reference_genome/Gallus_gallus.bGalGal1.mat.broiler.GRCg7b.dna.toplevel.fa.gz
-/home/nakashima/Lab/data_raw/reference_genome/Gorilla_gorilla.gorGor4.dna.toplevel.fa.gz
-/home/nakashima/Lab/data_raw/reference_genome/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
-/home/nakashima/Lab/data_raw/reference_genome/Macaca_mulatta.Mmul_10.dna.toplevel.fa.gz
-/home/nakashima/Lab/data_raw/reference_genome/Monodelphis_domestica.ASM229v1.dna.toplevel.fa.gz
-/home/nakashima/Lab/data_raw/reference_genome/Mus_musculus.GRCm39.dna.toplevel.fa.gz
-/home/nakashima/Lab/data_raw/reference_genome/Ornithorhynchus_anatinus.mOrnAna1.p.v1.dna.toplevel.fa.gz
-/home/nakashima/Lab/data_raw/reference_genome/Xenopus_tropicalis.UCB_Xtro_10.0.dna.toplevel.fa.gz
