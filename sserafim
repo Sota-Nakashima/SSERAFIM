@@ -13,7 +13,7 @@ CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=0.3.2
+readonly VERSION=0.4.0
 
 print_help()
 {
