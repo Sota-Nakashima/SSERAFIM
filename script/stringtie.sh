@@ -39,7 +39,7 @@ stringtie_parallel()
     conda activate bio
     if [[ "$2" == "@" ]] ; then
         # delay
-        sleep 10
+        sleep 2
         stringtie "$OUTPUT_DIR/bam/$1.bam" -e \
         -G "$GENOME_ANNOTATION_PATH" \
         -o "$OUTPUT_DIR_RESULT/gtf/$1.gtf" \
