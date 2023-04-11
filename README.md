@@ -2,7 +2,7 @@ SSERAFIM
 ====
 [![Version](https://img.shields.io/badge/stable-main-gree)](https://github.com/Sota-Nakashima/SSERAFIM)
 [![Version](https://img.shields.io/badge/OS-Linux-gree)](https://github.com/Sota-Nakashima/SSERAFIM)
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENCE)
+[![MIT License](http://img.shields.io/badge/license-GPL_v3-blue.svg?style=flat)](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENCE)
 #  Overview
 High-performance bioinfo tool.  
 Easy analysis of gene expression.  
@@ -97,7 +97,7 @@ However,if more than 10 cores are used,there is few difference. I recommend 5~8 
 [Evolutionary Genetics Lab](http://www.biology.kyushu-u.ac.jp/~kteshima/), [Kyushu Univ.](https://www.kyushu-u.ac.jp/en/)
 ## Licence
 
-[MIT](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENCE)
+[GPL v3](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENCE)
 
 ## Author
 
