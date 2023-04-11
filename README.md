@@ -95,7 +95,7 @@ Generally, the more cores, the less time it takes.
 However,if more than 10 cores are used,there is few difference. I recommend 5~8 cores. 
 ## Acknowledgements
 [Evolutionary Genetics Lab](http://www.biology.kyushu-u.ac.jp/~kteshima/), [Kyushu Univ.](https://www.kyushu-u.ac.jp/en/)
-## Licence
+## License
 
 [GPL v3](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENSE)
 
