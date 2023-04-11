@@ -2,7 +2,7 @@ SSERAFIM
 ====
 [![Version](https://img.shields.io/badge/stable-main-gree)](https://github.com/Sota-Nakashima/SSERAFIM)
 [![Version](https://img.shields.io/badge/OS-Linux-gree)](https://github.com/Sota-Nakashima/SSERAFIM)
-[![MIT License](http://img.shields.io/badge/license-GPL_v3-blue.svg?style=flat)](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENCE)
+[![GPL v3 License](http://img.shields.io/badge/license-GPL_v3-blue.svg?style=flat)](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENSE)
 #  Overview
 High-performance bioinfo tool.  
 Easy analysis of gene expression.  
