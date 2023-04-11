@@ -97,7 +97,7 @@ However,if more than 10 cores are used,there is few difference. I recommend 5~8 
 [Evolutionary Genetics Lab](http://www.biology.kyushu-u.ac.jp/~kteshima/), [Kyushu Univ.](https://www.kyushu-u.ac.jp/en/)
 ## Licence
 
-[GPL v3](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENCE)
+[GPL v3](https://github.com/Sota-Nakashima/SSERAFIM/blob/main/LICENSE)
 
 ## Author
 
