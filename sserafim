@@ -13,7 +13,7 @@ CONDA_INIT_PATH+="/etc/profile.d/conda.sh"
 
 ###################################
 readonly SCRIPT_NAME=${0##*/}
-readonly VERSION=0.4.0
+readonly VERSION=0.4.1
 
 print_help()
 {
@@ -227,8 +227,14 @@ mkdir -p "$OUTPUT_DIR"
 
 #prefetch
 printf '\n%s\n\n' "prefetch" &>> $OUTPUT_DIR/report.log
-bash $SCRIPT_DIR/script/sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
+#bash $SCRIPT_DIR/script/sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL &>> $OUTPUT_DIR/report.log
 
+#check&retry download list
+bash $SCRIPT_DIR/script/check_retry_sra_download.sh $CONDA_INIT_PATH $OUTPUT_DIR $SRA_LIST_PATH $PARALLEL $SCRIPT_DIR &>> $OUTPUT_DIR/report.log
+if [ $? -ne 0 ]; then
+    echo "${SCRIPT_NAME}: Can't download all SRR List." 1>&2
+    exit 1
+fi
 ##########################################
 
 #fasterq-dump
