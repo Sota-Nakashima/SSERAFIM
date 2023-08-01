@@ -6,11 +6,11 @@ SRA_LIST_PATH="$3"
 PARALLEL=$4
 
 #matching parallel number to prefetch
-if [[ $((PARALLEL)) -gt 8 ]]; then
-    PARALLEL=8
+if [[ $((PARALLEL)) -gt 10 ]]; then
+    PARALLEL=10
 fi
 
-mkdir $OUTPUT_DIR
+mkdir -p $OUTPUT_DIR
 
 #export var and function
 ##############################
